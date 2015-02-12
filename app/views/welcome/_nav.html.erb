@@ -1,0 +1,92 @@
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+
+
+			<a class="navbar-brand">Earthquakes!</a>
+		</div>
+
+
+		<% if user_signed_in? %>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+				<li><a href="#">Link</a></li>
+
+
+			</ul>
+
+			<form class="navbar-form navbar-left" role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search">
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+			<% end %>
+
+			<ul class="nav navbar-nav navbar-right">
+				<% if !user_signed_in? %>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Sign In <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<div class="form-group" id="logform">
+							<%= form_for(:user, :url => session_path(:user)) do |f| %>
+							<div id = "textbox" >
+								<%= f.text_field :email %> <br>
+								<%= f.password_field :password %>  <br>
+							</div>
+							<%= f.check_box :remember_me %>  <br>
+							<%= f.label :remember_me %>  <br>
+							<%= f.submit 'Sign in' %>  <br>
+							<%= link_to "Forgot your password?", new_password_path(:user) %>
+							<% end %>
+						</div>
+					</ul>
+				</li>
+
+				<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true" >Sign Up <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<div class="form-group" id='signupform'>
+							<%= form_for(:user, :url => registration_path(:user)) do |f| %>
+							<div class="field">
+								<%= f.label :email %><br />
+								<%= f.email_field :email, autofocus: true %>
+							</div>
+
+							<div class="field">
+								<%= f.label :password %> 
+								<% if @validatable %>
+								<em>(<%= @minimum_password_length %> characters minimum)</em>
+								<% end %><br />
+								<%= f.password_field :password, autocomplete: "off" %>
+							</div>
+
+							<div class="field">
+								<%= f.label :password_confirmation %><br>
+								<%= f.password_field :password_confirmation, autocomplete: "off" %><br>
+							</div>
+
+							<div class="actions">
+								<%= f.submit "Sign up" %>
+							</div>
+							<% end %>
+						</div>
+					</ul>
+				</li>
+
+				<% else %>
+				<li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+				<% end %>
+			</ul>
+
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>

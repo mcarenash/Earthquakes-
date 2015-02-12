@@ -1,0 +1,89 @@
+
+<head>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=places&sensor=true"></script> 
+  <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerclusterer/1.0/src/markerclusterer.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+  <style>
+    body { margin:0; padding:0; }
+  </style>
+  <title>USGS Earthquakes</title>
+</head>
+
+<body>
+  <%= render 'nav' %>
+
+  <div id="title">
+  </div>
+
+    <script>
+      $(document).ready(function() {
+        var dt = new Date();
+        var date2 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate()+1);
+        var date1 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate());
+
+        $.ajax({
+          url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime="+date1+"&endtime="+date2,
+      // url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2015-01-01&endtime=2015-01-02",      
+      dataType: 'json',
+      data: '',
+      success: function(json){
+        $date2 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+        $date1 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate()-1);
+
+        for (i=0; i<json.features.length; i++) {
+
+         var $mag = $('<p>').text("Magnitude: " +json.features[i].properties.mag);
+         var $place = $('<p>').text("Place: " +json.features[i].properties.place);
+         var $date = $('<p>').text("Date: " +new Date(json.features[i].properties.time));
+         var $longitude =  (json.features[i].geometry.coordinates[0]); 
+         var $latitude = (json.features[i].geometry.coordinates[1]);
+
+         $("#magnitude")
+         .append('<br>')
+         .append("Earthquake " + (i+1))
+         .append($mag)
+         .append($place)
+         .append($date)
+
+       }
+       $("#title")
+       .append("From "+$date1+" to " +$date2+" there has been a total of "+i+" Earthquakes")
+       .append("<br>")
+       .append("This report was generated on " + new Date(json.metadata.generated))
+     },
+
+   });
+});
+
+</script>
+</script>
+
+<nav>
+  <ul class="pagination">
+    <li>
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li>
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<div id ="magnitude" ng-init="Earthquakes= ">
+
+</div>
+
+</body>
+</html>

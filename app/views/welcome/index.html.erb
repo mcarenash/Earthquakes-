@@ -1,0 +1,128 @@
+
+<head>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=places&sensor=true"></script> 
+  <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerclusterer/1.0/src/markerclusterer.js"></script>
+
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet' />
+
+  <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+  <style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; height:85%; width:100%; }
+  </style>
+  <title>USGS Earthquakes</title>
+</head>
+<body>
+  <%= render 'nav' %>
+
+  <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/Leaflet.fullscreen.min.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css' rel='stylesheet' />
+<!--   <p>
+    <input type="button" name="query" id="query" value="Generate Report" />
+  </p> -->
+<!--   <br> 
+  <div id = "title">
+  </div>
+  <br> -->
+  <div id='map'></div>
+  <script>
+    L.mapbox.accessToken = 'pk.eyJ1IjoibWNhcmVuYXNqIiwiYSI6IkNiazBITmsifQ.1RRUCrj495rwKD4odsrYgg';
+  </script>
+
+  <script type="text/javascript">
+    var map; 
+    var markers = new L.MarkerClusterGroup();
+
+    map = L.mapbox.map('map', 'examples.map-i875kd35')
+    .setView([37.9, -77], 3)
+    .addLayer(L.mapbox.tileLayer('examples.h186knp8'));
+    L.control.fullscreen().addTo(map);
+
+    var geocoder = L.mapbox.geocoder('mapbox.places-v1');
+    geocoder.query('', showMap);
+
+    function showMap(err, data) {
+      if (data.lbounds) {
+        map.fitBounds(data.lbounds);
+          // var marker = L.marker([data.latlng[0], data.latlng[1]]).addTo(map);
+        } else if (data.latlng) {
+          map.setView([data.latlng[0], data.latlng[1]], 13);
+        }
+      }
+    </script>
+    
+    <script>
+
+      $(document).ready(function() {
+        var dt = new Date();
+        var date2 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate()+1);
+        var date1 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate());
+
+
+
+
+        $.ajax({
+          url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime="+date1+"&endtime="+date2,
+      // url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2015-01-01&endtime=2015-01-02",      
+      dataType: 'json',
+      data: '',
+      success: function(json){
+        $date2 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+        $date1 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate()-1);
+
+        for (i=0; i<json.features.length; i++) {
+
+         var $mag = $('<p>').text("Magnitude: " +json.features[i].properties.mag);
+         var $place = $('<p>').text("Place: " +json.features[i].properties.place);
+         var $date = $('<p>').text("Date: " +new Date(json.features[i].properties.time));
+         var $longitude =  (json.features[i].geometry.coordinates[0]); 
+         var $latitude = (json.features[i].geometry.coordinates[1])
+
+         var marker = L.marker([json.features[i].geometry.coordinates[1],(json.features[i].geometry.coordinates[0])],
+         {
+          icon: L.mapbox.marker.icon({
+            'marker-size': 'medium',
+            // 'marker-symbol': 'default',
+            'marker-color': '#fa0'
+          }), 
+
+        })
+         marker.bindPopup("<strong>"+json.features[i].properties.title+"</strong>"+ "<br>"+'Place: ' + json.features[i].properties.place + '<br>' + 'Magnitude: ' + json.features[i].properties.mag  + '<br>' + 'Date: ' + new Date(json.features[i].properties.time) + '<br>'+"<a href='/events'> More Information </a>");
+         markers.addLayer(marker);
+         map.addLayer(markers);
+
+
+         // $("#magnitude")
+         // .append('<br>')
+         // .append("Earthquake " + (i+1))
+         // .append($mag)
+         // .append($place)
+         // .append($date)
+
+       }
+       // $("#title")
+       // .append("From "+$date1+" to " +$date2+" there has been a total of "+i+" Earthquakes")
+       // .append("<br><br>")
+       // .append("This report was generated on " + new Date(json.metadata.generated))
+     },
+
+   });
+});
+
+</script>
+</script>
+
+<!-- <div id ="magnitude" ng-init="Earthquakes= ">
+
+</div> -->
+
+</body>
+</html>
