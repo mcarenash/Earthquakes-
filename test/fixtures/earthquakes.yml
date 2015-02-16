@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  eqid: MyString
+  title: MyString
+  magnitude: 1.5
+  latitude: 1.5
+  longitude: 1.5
+  place: MyString
+  time: 1.5
+
+two:
+  eqid: MyString
+  title: MyString
+  magnitude: 1.5
+  latitude: 1.5
+  longitude: 1.5
+  place: MyString
+  time: 1.5

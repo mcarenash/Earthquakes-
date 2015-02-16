@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
+
+  resources :earthquakes
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -7,7 +9,7 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   get 'welcome/about'
-   get 'welcome/all'
+  get 'welcome/all'
   match 'auth/:provider/callback', to: 'omniauth#create', via: [:get, :post]
   match 'auth/failure', to: redirect('/'), via: [:get, :post]
   # Example of regular route:

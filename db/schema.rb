@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211184137) do
+ActiveRecord::Schema.define(version: 20150212193644) do
+
+  create_table "earthquakes", force: :cascade do |t|
+    t.string   "eqid"
+    t.string   "title"
+    t.float    "magnitude"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "place"
+    t.float    "time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "installs", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
