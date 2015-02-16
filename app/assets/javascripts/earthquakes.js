@@ -16,6 +16,7 @@ var EL = {
 		$.ajax({
 			type: "POST",
 			url: "/earthquakes",
+			url: "/favorites",
 			data: { title: title, time: time, eqid: eqid, latitude: latitude, longitude: longitude, magnitude: magnitude, place: place   },
 		})
 		//Success
