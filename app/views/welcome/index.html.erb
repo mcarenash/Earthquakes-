@@ -34,7 +34,7 @@
           }
         }
       </script>
-      
+       
       <script>
 
         $(document).ready(function() {
@@ -79,7 +79,17 @@
            var magnitude = json.features[i].properties.mag;
            var place = json.features[i].properties.place;
 
-           var addDataBase = "<button  data-place='" + place + "' data-magnitude='" + magnitude + "' data-longitude='" + longitude + "' data-latitude='" + latitude + "' data-eqid='" + eqid + "' data-title='" + title + "' data-time='" + time +"' onclick='EL.postEarthquake(this)'>Add to Database</button>";
+           
+
+           <% if user_signed_in? %>
+           var user_id = <%= current_user.id %>
+           <% else %>
+           var user_id = 0 
+           <% end %>
+
+
+           var addDataBase = "<button  data-user_id='" + user_id + "' data-place='" + place + "' data-magnitude='" + magnitude + "' data-longitude='" + longitude + "' data-latitude='" + latitude + "' data-eqid='" + eqid + "' data-title='" + title + "' data-time='" + time +"' onclick='EL.postEarthquake(this)'>Add to Favorites</button>";
+            // var addDataBase = "<button  data-place='" + place + "' data-magnitude='" + magnitude + "' data-longitude='" + longitude + "' data-latitude='" + latitude + "' data-eqid='" + eqid + "' data-title='" + title + "' data-time='" + time +"' onclick='EL.postEarthquake(this)'>Add to Database</button>";
           
 
             marker.bindPopup("<strong>"+json.features[i].properties.title+"</strong>"+ "<br>"+"Place: " + json.features[i].properties.place + "<br>" + "Magnitude: " + json.features[i].properties.mag  + "<br>" + "Date: " + new Date(json.features[i].properties.time) + "<br>"+"<a href='/events'> More Information </a>" + "<br>"+ addDataBase);
@@ -136,7 +146,7 @@
            var title = json.features[i].properties.title;
            var time = json.features[i].properties.time;
            var eqid = json.features[i].properties.ids;
-            var addDataBase = "<button data-eqid='" + eqid + "' data-title='" + title + "' data-time='" + time +"' onclick='EL.postEarthquake(this)'>Add to Database</button>";
+           var addDataBase = "<button data-eqid='" + eqid + "' data-title='" + title + "' data-time='" + time +"' onclick='EL.postEarthquake(this)'>Add to Database</button>";
 
             marker.bindPopup("<strong>"+json.features[i].properties.title+"</strong>"+ "<br>"+"Place: " + json.features[i].properties.place + "<br>" + "Magnitude: " + json.features[i].properties.mag  + "<br>" + "Date: " + new Date(json.features[i].properties.time) + "<br>"+"<a href='/events'> More Information </a>" + "<br>"+ addDataBase);
 

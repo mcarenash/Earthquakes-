@@ -1,25 +1,28 @@
 class FavoritesController < ApplicationController
-		def index
-		earthquakes = Earthquake.all
-		render json: earthquakes
+	# before_action :authenticate_user!
+	def index
+		favorites = Favorite.all
+		render json: favorites
 	end
 
 	def new 
 	end
 
 	def create
-		earthquake = Earthquake.new(title: params[:title], time: params[:time], eqid: params[:eqid], latitude: params[:latitude], longitude: params[:longitude], magnitude: params[:magnitude], place: params[:place])
-		# binding.pry
-		if earthquake.save
-			render json: earthquake
+		favorite = Favorite.new(user_id: params[:user_id], earthquake_id: params[:earthquake_id])
+		if favorite.save
+			render json: favorite
 		else
-			render json: earthquake.errors.full_messages
+			render json: favorite.errors.full_messages
 		end
 	end
 	
 	private
 
-		# def earthquake_params
-		# 	params.permit(:time)
+		# def favorite_params
+		# 	params.require(:favorite).permit(
+		# 		:user_id, :earthquake_id
+		# 		)
 		# end
-end
+	end
+

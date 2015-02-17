@@ -18,6 +18,11 @@ class EarthquakesController < ApplicationController
 			render json: earthquake.errors.full_messages
 		end
 	end
+
+	def show
+		@earthquake = Earthquake.find(params[:id])
+	end
+
 	
 	private
 
