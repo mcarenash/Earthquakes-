@@ -1,9 +1,8 @@
-
 <script>
   google.load("visualization", "1", {packages:["table"]});
 
   $(document).ready(function() {
-
+    console.log("Loading  data,")
     var dt = new Date();
     var date2 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate()+1);
     var date1 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate());
@@ -39,11 +38,10 @@
       }   
 
     });
+
     }
   });
-
 </script>
 
 <div id="table_div"></div>
-
 </div>
