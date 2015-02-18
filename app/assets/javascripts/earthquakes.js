@@ -9,6 +9,8 @@ var EL = {
 		var magnitude = $(context).attr("data-magnitude");
 		var place = $(context).attr("data-place");
 		var user_id = $(context).attr("data-user_id");
+		
+
 
 		//AJAX Post request
 		$.ajax({

@@ -1,0 +1,49 @@
+
+<script>
+  google.load("visualization", "1", {packages:["table"]});
+
+  $(document).ready(function() {
+
+    var dt = new Date();
+    var date2 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate()+1);
+    var date1 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate());
+
+    google.setOnLoadCallback(drawTable);      
+    function drawTable() {
+      var datad = new google.visualization.DataTable();
+
+      datad.addColumn('string', 'Title');
+      datad.addColumn('number', 'Magnitude');
+      datad.addColumn('string', 'Place');
+      datad.addColumn('string', 'Date');
+
+      $.ajax({
+        // url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2015-01-01&endtime=2015-01-02",
+      url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime="+date1+"&endtime="+date2,
+      dataType: 'json',
+      data: '',
+      success: function(json){
+        window.json = json;
+
+        for (i=0; i<json.features.length; i++) {
+
+          datad.addRows([
+            [json.features[i].properties.title,  json.features[i].properties.mag, json.features[i].properties.place, String(new Date(json.features[i].properties.time))]        
+            ]);
+
+        }
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+        table.draw(datad, {showRowNumber: false});
+
+        
+      }   
+
+    });
+    }
+  });
+
+</script>
+
+<div id="table_div"></div>
+
+</div>

@@ -2,8 +2,8 @@ class EarthquakesController < ApplicationController
 	# before_action :earthquake_params, only: :create
 
 	def index
-		earthquakes = Earthquake.all
-		render json: earthquakes
+		# earthquakes = Earthquake.all
+		# render json: earthquakes
 	end
 
 	def new 

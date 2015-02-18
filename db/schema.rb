@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150216234042) do
+ActiveRecord::Schema.define(version: 20150217220037) do
 
   create_table "earthquakes", force: :cascade do |t|
     t.string   "eqid"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20150216234042) do
     t.float    "time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "type"
   end
 
   create_table "favorites", force: :cascade do |t|

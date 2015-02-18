@@ -1,13 +1,7 @@
 
-    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/Leaflet.fullscreen.min.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css' rel='stylesheet' />
-  <!--   <p>
-      <input type="button" name="query" id="query" value="Generate Report" />
-    </p> -->
-  <!--   <br> 
-    <div id = "title">
-    </div>
-    <br> -->
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/Leaflet.fullscreen.min.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css' rel='stylesheet' />
+
     <div id='map'></div>
     <script>
       L.mapbox.accessToken = 'pk.eyJ1IjoibWNhcmVuYXNqIiwiYSI6IkNiazBITmsifQ.1RRUCrj495rwKD4odsrYgg';
@@ -34,7 +28,7 @@
           }
         }
       </script>
-       
+
       <script>
 
         $(document).ready(function() {
@@ -55,9 +49,9 @@
 
           for (i=0; i<json.features.length; i++) {
 
-           var $mag = $('<p>').text("Magnitude: " +json.features[i].properties.mag);
+           var $mag   = $('<p>').text("Magnitude: " +json.features[i].properties.mag);
            var $place = $('<p>').text("Place: " +json.features[i].properties.place);
-           var $date = $('<p>').text("Date: " +new Date(json.features[i].properties.time));
+           var $date    = $('<p>').text("Date: " +new Date(json.features[i].properties.time));
            var $longitude =  (json.features[i].geometry.coordinates[0]); 
            var $latitude = (json.features[i].geometry.coordinates[1])
 
@@ -71,13 +65,15 @@
 
           })
            // marker.bindPopup("<strong>"+json.features[i].properties.title+"</strong>"+ "<br>"+'Place: ' + json.features[i].properties.place + '<br>' + 'Magnitude: ' + json.features[i].properties.mag  + '<br>' + 'Date: ' + new Date(json.features[i].properties.time) + '<br>'+"<a href='/events'> More Information </a>" + '<br>' + "<%= escape_javascript link_to 'Add to Database', earthquakes_path(), :method => :post %>" );
-           var title = json.features[i].properties.title;
-           var time = json.features[i].properties.time;
-           var eqid = json.features[i].id;
+           var title     = json.features[i].properties.title;
+           var time      = json.features[i].properties.time;
+           var eqid      = json.features[i].id;
            var longitude = json.features[i].geometry.coordinates[0];
-           var latitude = json.features[i].geometry.coordinates[1];
+           var latitude  = json.features[i].geometry.coordinates[1];
            var magnitude = json.features[i].properties.mag;
-           var place = json.features[i].properties.place;
+           var place     = json.features[i].properties.place;
+           var type      = json.features[i].properties.type;
+           var report    = new Date(json.metadata.generated)
 
            
 
@@ -90,14 +86,14 @@
 
            var addDataBase = "<button  data-user_id='" + user_id + "' data-place='" + place + "' data-magnitude='" + magnitude + "' data-longitude='" + longitude + "' data-latitude='" + latitude + "' data-eqid='" + eqid + "' data-title='" + title + "' data-time='" + time +"' onclick='EL.postEarthquake(this)'>Add to Favorites</button>";
             // var addDataBase = "<button  data-place='" + place + "' data-magnitude='" + magnitude + "' data-longitude='" + longitude + "' data-latitude='" + latitude + "' data-eqid='" + eqid + "' data-title='" + title + "' data-time='" + time +"' onclick='EL.postEarthquake(this)'>Add to Database</button>";
-          
 
-            marker.bindPopup("<strong>"+json.features[i].properties.title+"</strong>"+ "<br>"+"Place: " + json.features[i].properties.place + "<br>" + "Magnitude: " + json.features[i].properties.mag  + "<br>" + "Date: " + new Date(json.features[i].properties.time) + "<br>"+"<a href='/events'> More Information </a>" + "<br>"+ addDataBase);
+
+            marker.bindPopup("<strong>"+json.features[i].properties.title+"</strong>"+ "<br>"+"Place: " + json.features[i].properties.place + "<br>" + "Magnitude: " + json.features[i].properties.mag  + "<br>" + "Date: " + new Date(json.features[i].properties.time) + "<br>"+ addDataBase);
 
 
             // "<a href='javascript:EL.postEarthquake(" + json.features[i].properties.title + ")>Add to Database</a>");
-           markers.addLayer(marker);
-           map.addLayer(markers);
+            markers.addLayer(marker);
+            map.addLayer(markers);
            // $("#postEarthquake" + String(i)).attr("test", "foobar");
            // var window.dis = $("#postEarthquake" + String(i)) //.attr("onclick", "EL.postEarthquake(" + title + "," + time + ")");
          }
@@ -105,19 +101,19 @@
        },
 
      });
-  });
+});
 
 
-        $('#query').click(function() {
-          markers.clearLayers()
+$('#query').click(function() {
+  markers.clearLayers()
 
-          var dt = new Date();
-          var endDate = document.getElementById("endDate").value
-          var startDate = document.getElementById("startDate").value;
+  var dt = new Date();
+  var endDate = document.getElementById("endDate").value
+  var startDate = document.getElementById("startDate").value;
 
 
-          $.ajax({
-            url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime="+startDate+"&endtime="+endDate,
+  $.ajax({
+    url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime="+startDate+"&endtime="+endDate,
         // url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2015-01-01&endtime=2015-01-02",      
         dataType: 'json',
         data: '',
@@ -143,12 +139,23 @@
 
           })
 
-           var title = json.features[i].properties.title;
-           var time = json.features[i].properties.time;
-           var eqid = json.features[i].properties.ids;
-           var addDataBase = "<button data-eqid='" + eqid + "' data-title='" + title + "' data-time='" + time +"' onclick='EL.postEarthquake(this)'>Add to Database</button>";
+           var title     = json.features[i].properties.title;
+           var time      = json.features[i].properties.time;
+           var eqid      = json.features[i].id;
+           var longitude = json.features[i].geometry.coordinates[0];
+           var latitude  = json.features[i].geometry.coordinates[1];
+           var magnitude = json.features[i].properties.mag;
+           var place     = json.features[i].properties.place;
+           var type      = json.features[i].properties.type
 
-            marker.bindPopup("<strong>"+json.features[i].properties.title+"</strong>"+ "<br>"+"Place: " + json.features[i].properties.place + "<br>" + "Magnitude: " + json.features[i].properties.mag  + "<br>" + "Date: " + new Date(json.features[i].properties.time) + "<br>"+"<a href='/events'> More Information </a>" + "<br>"+ addDataBase);
+           <% if user_signed_in? %>
+           var user_id = <%= current_user.id %>
+           <% else %>
+           var user_id = 0 
+           <% end %>
+           var addDataBase = "<button  data-user_id='" + user_id + "' data-place='" + place + "' data-magnitude='" + magnitude + "' data-longitude='" + longitude + "' data-latitude='" + latitude + "' data-eqid='" + eqid + "' data-title='" + title + "' data-time='" + time +"' onclick='EL.postEarthquake(this)'>Add to Favorites</button>";
+
+           marker.bindPopup("<strong>"+json.features[i].properties.title+"</strong>"+ "<br>"+"Place: " + json.features[i].properties.place + "<br>" + "Magnitude: " + json.features[i].properties.mag  + "<br>" + "Date: " + new Date(json.features[i].properties.time) + "<br>"+ addDataBase);
 
            markers.addLayer(marker);
            map.addLayer(markers);
@@ -158,14 +165,14 @@
        },
 
      });
-  });
+});
 
-  </script>
-  </script>
+</script>
+</script>
 
   <!-- <div id ="magnitude" ng-init="Earthquakes= ">
 
-  </div> -->
+</div> -->
 
-  </body>
-  </html>
+</body>
+</html>
