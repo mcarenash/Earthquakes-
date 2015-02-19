@@ -1,46 +1,24 @@
-
 <h1>Welcome <%= current_user.email %></h1>
+<div id="table_div"></div>
+<script type="text/javascript">
+	function drawTable() {
+		var data = new google.visualization.DataTable();
 
-<html>
-<style>
-	#table_div {
-		text-align: center;
+		data.addColumn('string', 'Title');
+		data.addColumn('string', 'Magnitude');
+		data.addColumn('string', 'Place');
+		data.addColumn('string', 'Date');
+
+		<% current_user.earthquakes.each do |earthquake| %> 
+		data.addRows([
+			['<%= earthquake.title %>',  '<%= earthquake.magnitude %>', '<%= earthquake.place %>', '<%= Time.at(earthquake.time/1000) %>']
+
+			]);
+		<% end %>
+
+		var table = new google.visualization.Table(document.getElementById('table_div'));
+
+		table.draw(data, {showRowNumber: false});
 	}
-	body {
-		margin: 10px;
-	}
-</style>
-<head>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script type="text/javascript">
-		google.load("visualization", "1", {packages:["table"]});
-    
-		$(document).ready(function() {
-			google.setOnLoadCallback(drawTable);
-			function drawTable() {
-				var data = new google.visualization.DataTable();
-
-				data.addColumn('string', 'Title');
-				data.addColumn('string', 'Magnitude');
-				data.addColumn('string', 'Place');
-				data.addColumn('string', 'Date');
-
-				<% current_user.earthquakes.each do |earthquake| %> 
-				data.addRows([
-					['<%= earthquake.title %>',  '<%= earthquake.magnitude %>', '<%= earthquake.place %>', '<%= Time.at(earthquake.time/1000) %>']
-
-					]);
-				<% end %>
-
-				var table = new google.visualization.Table(document.getElementById('table_div'));
-
-				table.draw(data, {showRowNumber: false});
-			}
-
-		});
-	</script>
-</head>
-<body>
-	<div id="table_div"></div>
-</body>
-</html>
+	google.load("visualization", "1", {packages:["table"], callback: drawTable})
+</script>

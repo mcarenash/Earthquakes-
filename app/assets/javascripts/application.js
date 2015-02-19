@@ -15,7 +15,7 @@
 //= require twitter/bootstrap
 //= require turbolinks
 //= require underscore
-//= require gmaps/google
+//= require jsapi
 
 //= require mapbox.js
 //= require_tree .
