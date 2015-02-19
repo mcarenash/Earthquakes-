@@ -1,4 +1,6 @@
+<div id = "title"></div>
 <div id="table_div"></div>
+
 <script>
 
   function drawTable() {
@@ -15,6 +17,8 @@
       dataType: 'json',
       data: '',
       success: function(json){
+        $date2 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+        $date1 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate()-1);
         window.json = json;
 
         for (i=0; i<json.features.length; i++) {
@@ -23,11 +27,16 @@
             [json.features[i].properties.title,  json.features[i].properties.mag, json.features[i].properties.place, String(new Date(json.features[i].properties.time))]        
             ]);
 
+          
         }
         var table = new google.visualization.Table(document.getElementById('table_div'));
         table.draw(datad, {showRowNumber: false});
 
-        
+        $("#title")
+          .append("<strong>"+"From "+$date1+" to " +$date2+" there has been a total of "+i+" Earthquakes" + "</strong")
+          .append("<br>")
+          .append("<strong>"+"This report was generated on " + new Date(json.metadata.generated)+ "</strong")
+
       }   
 
     });
