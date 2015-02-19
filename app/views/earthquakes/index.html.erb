@@ -1,23 +1,16 @@
+<div id="table_div"></div>
 <script>
-  google.load("visualization", "1", {packages:["table"]});
 
-  $(document).ready(function() {
-    console.log("Loading  data,")
-    var dt = new Date();
-    var date2 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate()+1);
-    var date1 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate());
+  function drawTable() {
+    var datad = new google.visualization.DataTable();
 
-    google.setOnLoadCallback(drawTable);      
-    function drawTable() {
-      var datad = new google.visualization.DataTable();
+    datad.addColumn('string', 'Title');
+    datad.addColumn('number', 'Magnitude');
+    datad.addColumn('string', 'Place');
+    datad.addColumn('string', 'Date');
 
-      datad.addColumn('string', 'Title');
-      datad.addColumn('number', 'Magnitude');
-      datad.addColumn('string', 'Place');
-      datad.addColumn('string', 'Date');
-
-      $.ajax({
-        // url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2015-01-01&endtime=2015-01-02",
+    $.ajax({
+      // url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2015-01-01&endtime=2015-01-02",
       url: "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime="+date1+"&endtime="+date2,
       dataType: 'json',
       data: '',
@@ -39,9 +32,17 @@
 
     });
 
-    }
-  });
+  }
+
+
+
+    google.load("visualization", "1", {packages:["table"], callback: drawTable});
+    var dt = new Date();
+    var date2 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate()+1);
+    var date1 = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + (dt.getDate());
+
+
 </script>
 
-<div id="table_div"></div>
-</div>
+
+

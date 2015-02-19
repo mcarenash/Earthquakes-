@@ -16,6 +16,5 @@
 //= require turbolinks
 //= require underscore
 //= require jsapi
-
-//= require mapbox.js
+//= require mapbox
 //= require_tree .

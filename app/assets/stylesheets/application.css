@@ -14,3 +14,19 @@
  *= require_self
 
  */ 
+
+body { margin:0; padding:0; }
+#map { position:absolute; height:85%; width:100%; }
+#logform {
+	height: 150px;
+	width: 250px;
+	text-align: center;
+	font-size: 15px
+}
+
+#signupform {
+	height: 180px;
+	width: 250px;
+	text-align: center;
+	font-size: 15px
+}
