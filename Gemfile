@@ -65,7 +65,7 @@ group :production do
   gem 'pg'
 
   # This gem will make Heroku serve your assets (CSS, JS, etc)
-  gem 'rails_12factor'
+
 end
 
 
