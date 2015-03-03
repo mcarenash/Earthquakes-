@@ -1,8 +1,11 @@
 <style>
 
-	#bs-example-navbar-collapse-1 {
-		position: center;
-	}
+	.navbar {
+position: relative;
+min-height: 50px;
+margin-bottom: 0;
+border: 1px solid transparent;
+}
 
 </style>
 
@@ -36,54 +39,11 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li class="nav navbar-nav"></li>
 					<% if !user_signed_in? %>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Sign In <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<div class="form-group" id="logform">
-								<%= form_for(:user, :url => session_path(:user)) do |f| %>
-								<div id = "textbox" >
-									<%= f.text_field :email %> <br>
-									<%= f.password_field :password %>  <br>
-								</div>
-								<%= f.check_box :remember_me %>  <br>
-								<%= f.label :remember_me %>  <br>
-								<%= f.submit 'Sign in' %>  <br>
-								<%= link_to "Forgot your password?", new_password_path(:user) %>
-								<% end %>
-							</div>
-						</ul>
-					</li>
+						<li><%= link_to "Sign In",  new_user_session_path%></li>
+						<li><%= link_to "Sign Up",  new_user_registration_path%></li>
 
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true" >Sign Up <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<div class="form-group" id='signupform'>
-								<%= form_for(:user, :url => registration_path(:user)) do |f| %>
-								<div class="field">
-									<%= f.label :email %><br />
-									<%= f.email_field :email, autofocus: true %>
-								</div>
 
-								<div class="field">
-									<%= f.label :password %> 
-									<% if @validatable %>
-									<em>(<%= @minimum_password_length %> characters minimum)</em>
-									<% end %><br />
-									<%= f.password_field :password, autocomplete: "off" %>
-								</div>
 
-								<div class="field">
-									<%= f.label :password_confirmation %><br>
-									<%= f.password_field :password_confirmation, autocomplete: "off" %><br>
-								</div>
-
-								<div class="actions">
-									<%= f.submit "Sign up" %>
-								</div>
-								<% end %>
-							</div>
-						</ul>
-					</li>
 
 					<% else %>
 					<li> <a class="navbar-brand" href="/earthquakes" >List</a> </li>

@@ -1,10 +1,7 @@
 <style>
-	#datesInput{
-		display: inline-block;
-		width: auto;
-		vertical-align: middle;
-		margin-top: 8px;
-		
+
+	#bs-example-navbar-collapse-1 {
+		position: center;
 	}
 
 </style>
@@ -20,66 +17,37 @@
 				<span class="icon-bar"></span>
 			</button>
 
-
-			<a class="navbar-brand" href="/">Earthquakes!</a>
+			
 		</div>
 
-			<ul class="nav navbar-nav navbar-right">
-				<% if !user_signed_in? %>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Sign In <span class="caret"></span></a>
-					<ul class="dropdown-menu" role="menu">
-						<div class="form-group" id="logform">
-							<%= form_for(:user, :url => session_path(:user)) do |f| %>
-							<div id = "textbox" >
-								<%= f.text_field :email %> <br>
-								<%= f.password_field :password %>  <br>
-							</div>
-							<%= f.check_box :remember_me %>  <br>
-							<%= f.label :remember_me %>  <br>
-							<%= f.submit 'Sign in' %>  <br>
-							<%= link_to "Forgot your password?", new_password_path(:user) %>
-							<% end %>
-						</div>
-					</ul>
-				</li>
+		<a class="navbar-brand" href="/">Earthquakes!</a>
+		<% if user_signed_in? %>
+		<div class="navbar-form collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<div class="form-group">
+				<ul class="nav navbar-nav" id="datesInput">
 
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true" >Sign Up <span class="caret"></span></a>
-					<ul class="dropdown-menu" role="menu">
-						<div class="form-group" id='signupform'>
-							<%= form_for(:user, :url => registration_path(:user)) do |f| %>
-							<div class="field">
-								<%= f.label :email %><br />
-								<%= f.email_field :email, autofocus: true %>
-							</div>
+					<li class="active">From: <input type="date" id="startDate" class="form-control">  <span class="sr-only">(current)</span></a></li>
+					<li>  To:  <input type="date" id="endDate" class="form-control"></li>
+					<li><input type="button" class="btn btn-default" name="query" id="query" value="Generate Report"/></li>
 
-							<div class="field">
-								<%= f.label :password %> 
-								<% if @validatable %>
-								<em>(<%= @minimum_password_length %> characters minimum)</em>
-								<% end %><br />
-								<%= f.password_field :password, autocomplete: "off" %>
-							</div>
-
-							<div class="field">
-								<%= f.label :password_confirmation %><br>
-								<%= f.password_field :password_confirmation, autocomplete: "off" %><br>
-							</div>
-
-							<div class="actions">
-								<%= f.submit "Sign up" %>
-							</div>
-							<% end %>
-						</div>
-					</ul>
-				</li>
-
-				<% else %>
-				<li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+				</div>
 				<% end %>
-			</ul>
 
-		</div><!-- /.navbar-collapse -->
-	</div><!-- /.container-fluid -->
-</nav>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="nav navbar-nav"></li>
+					<% if !user_signed_in? %>
+						<li><%= link_to "Sign Up",  new_user_registration_path%></li>
+
+
+
+
+					<% else %>
+					<li> <a class="navbar-brand" href="/earthquakes" >List</a> </li>
+					<li> <a class="navbar-brand" href="/users/<%= current_user.id %>" >Profile</a> </li>
+					<li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+					<% end %>
+				</ul>
+
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
